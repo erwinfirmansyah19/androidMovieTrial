@@ -36,7 +36,6 @@ class MovieListActivity : AppCompatActivity() {
 
                 var movieList = movieViewModel.getMovieByGenre(genreID)
                 if(movieList!=null){
-                    println("MOVIE LIST NOT NULL ACTIVITY")
                     movieAdapter = MovieAdapter(movieList!!, applicationContext, genreID)
                     rvMovies.adapter = movieAdapter
                     rvMovies.layoutManager = LinearLayoutManager(applicationContext)

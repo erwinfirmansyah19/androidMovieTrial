@@ -8,7 +8,6 @@ import com.example.moviereviewer.model.action.MovieAction
 import com.example.moviereviewer.rest.api.ApiInterface
 import com.example.moviereviewer.rest.param.result.GenreResponse
 import com.example.moviereviewer.rest.param.result.MovieResponse
-import com.example.moviereviewer.rest.param.result.ReviewResponse
 import com.google.gson.Gson
 import id.hellobill.hellobilltrackingsales.rest.api.ApiClient
 import io.realm.Realm
@@ -16,15 +15,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GetterService : IntentService("getterservice"){
+class ReviewService : IntentService("getterservice"){
 
     val apiService = ApiClient.client.create(ApiInterface::class.java)
     var realm = Realm.getDefaultInstance()
     var genreAction = GenreAction(realm)
     var movieAction = MovieAction(realm)
     override fun onHandleIntent(intent: Intent?) {
-        println("Start Service")
-        syncGenre()
         syncMovie()
     }
 

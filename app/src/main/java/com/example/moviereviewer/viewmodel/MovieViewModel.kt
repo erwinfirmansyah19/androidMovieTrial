@@ -24,9 +24,7 @@ class MovieViewModel {
     }
 
     fun getMovieByGenre(genreID : String) : ArrayList<DtbMovie>?{
-        println("genreID " + genreID)
         var allMovieRealm = movieAction.getMovieByGenreID(genreID)
-        println("tarik datanyaa")
         if(allMovieRealm != null){
             println(allMovieRealm!!.size)
             try {

@@ -13,16 +13,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviereviewer.R
 import com.example.moviereviewer.adapter.MovieAdapter
 import com.example.moviereviewer.global.Attributes
+import com.example.moviereviewer.model.schema.DtbReview
 import com.example.moviereviewer.viewmodel.MovieViewModel
+import com.example.moviereviewer.viewmodel.ReviewViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 import kotlinx.android.synthetic.main.activity_movie_detail.toolbar
 import kotlinx.android.synthetic.main.activity_movie_list.*
+import java.util.*
+import kotlin.concurrent.schedule
 
 class MovieDetailActivity : AppCompatActivity() {
 
     var movieViewModel = MovieViewModel()
+    var reviewViewModel = ReviewViewModel()
     var genreParent : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_detail)
@@ -54,6 +60,12 @@ class MovieDetailActivity : AppCompatActivity() {
                 language.text = "Language :  "+ movieData?.OriginalLanguage
 
                 Picasso.get().load(Attributes.BACKDROP_URL + movieData?.BackDropPath).into(backdropMovie)
+
+                reviewViewModel.getReview(movieID)!!
+                Timer("Sync", false).schedule(3000){
+                    setAdapter(movieID)
+                }
+
             }
         }
     }
@@ -66,5 +78,15 @@ class MovieDetailActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         applicationContext.startActivity(intent)
+    }
+
+    fun setAdapter(movieID: String){
+        var reviewList = reviewViewModel.getReviewByMovieID(movieID)
+        if(reviewList!=null){
+            println("totalreview "+ reviewList?.size)
+        }else{
+            println("masih proses ")
+        }
+
     }
 }

@@ -12,7 +12,7 @@ class InitApp: Application(){
         super.onCreate()
         Realm.init(applicationContext)
         println("INI APP JALAN")
-        val configuration = RealmConfiguration.Builder().name("dbmovie.realm").schemaVersion(3).migration(Migration()).build()
+        val configuration = RealmConfiguration.Builder().name("dbmovie.realm").schemaVersion(4).migration(Migration()).build()
         Realm.setDefaultConfiguration(configuration)
         Realm.getInstance(configuration)
         println("INI APP clear")

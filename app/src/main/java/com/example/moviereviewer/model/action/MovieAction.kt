@@ -2,6 +2,7 @@ package com.example.moviereviewer.model.action
 
 import com.example.moviereviewer.model.schema.DtbGenre
 import com.example.moviereviewer.model.schema.DtbMovie
+import com.example.moviereviewer.model.schema.DtbReview
 import com.example.moviereviewer.rest.param.result.DtbMovieResponse
 import com.google.gson.Gson
 import io.realm.Case
@@ -27,6 +28,34 @@ class MovieAction(realm : Realm) {
 
     fun getMovieByTitle(title : String) : DtbMovie? {
         return realm.where(DtbMovie::class.java).equalTo("Title", title).findFirst()
+    }
+
+    fun getReviewByMovieID(movieID : String) : RealmResults<DtbReview>? {
+        return realm.where(DtbReview::class.java).equalTo("MovieID", movieID).findAll()
+    }
+
+    fun saveReviews(data: ArrayList<DtbReview>, movieID: String) {
+        realm.executeTransaction {
+            for (i in data) {
+                val search =
+                    it.where(DtbReview::class.java).equalTo("ReviewID", i.ReviewID).findFirst()
+                if (search != null) {
+                    search.Author = i.Author
+                    search.MovieID = movieID
+                    search.UserReview = i.UserReview
+                    search.MovieID = i.URL
+                    println("Author " + i.Author)
+                } else {
+                    val newData = it.createObject(DtbReview::class.java, UUID.randomUUID().toString())
+                    newData.ReviewID = i.ReviewID
+                    newData.Author = i.Author
+                    newData.MovieID = movieID
+                    newData.UserReview = i.UserReview
+                    newData.MovieID = i.URL
+                    println("Author " + i.Author)
+                }
+            }
+        }
     }
 
     fun serverSync(data: ArrayList<DtbMovieResponse>) {
